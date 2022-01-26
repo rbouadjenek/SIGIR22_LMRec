@@ -22,11 +22,21 @@ from transformers import BertTokenizer
 from tokenizers import BertWordPieceTokenizer
 import os
 import re
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+relations = {'Brother', 'Sister', 'Son', 'Daughter', 'Mother', 'Father', 'Boyfriend', 'Girlfriend', 'Aunt', 'Uncle',
+             'Nephew', 'Niece', 'Grandmother', 'Grandfather', 'Grandson', 'Granddaughter', 'Stepson', 'Stepdaughter',
+             'Stepsister', 'Stepbrother', 'Brother', 'Father', 'Sister', 'Mother-in-law', 'Fiance', 'Fiancee',
+             'Husband', 'Wife', 'Ex-wife', 'Husband', 'Boyfriend', 'Girlfriend'}
+names = set(line.strip() for line in open('names.txt'))
+stopwords = stopwords.words('english')
 
 
 class Dataset:
-    def __init__(self, dataset):
+    def __init__(self, dataset, masking=False):
         self.dataset = dataset
+        self.masking = masking
         dataset_path = self.data_path()
         print('Data in: ', dataset_path)
         df = pd.read_csv(dataset_path, lineterminator='\n')
@@ -81,6 +91,8 @@ class Dataset:
                 mask = ' '.join(['[MASK]' for x in range(len(name.split()))])
                 pattern = re.compile(name, re.IGNORECASE)
                 review_text = pattern.sub(mask, review_text)
+                if self.masking:
+                    review_text = self.mask_entities(review_text)
                 # Process text
                 tokenized_review = tokenizer.encode(review_text)
                 input_ids = tokenized_review.ids
@@ -193,6 +205,17 @@ class Dataset:
 
         # For each match, look up the new string in the replacements
         return regexp.sub(lambda match: replacements[match.group(0)], string)
+
+    def mask_entities(self, aText_string, exlusion_list=[]):
+        exlusion_list = [t.lower() for t in exlusion_list]
+        tokenized_text = word_tokenize(aText_string)
+        token_txt = set([txt.capitalize() for txt in tokenized_text if txt.lower() not in stopwords
+                         and txt.lower() not in exlusion_list])
+
+        token_txt = token_txt.intersection(names.union(relations))
+        for txt in token_txt:
+            aText_string = re.compile(re.escape(txt), re.IGNORECASE).sub('[MASK]', aText_string)
+        return aText_string
 
 
 if __name__ == '__main__':
