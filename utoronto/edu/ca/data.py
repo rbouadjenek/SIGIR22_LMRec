@@ -24,6 +24,7 @@ import os
 import re
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import nltk
 
 relations = {'Brother', 'Sister', 'Son', 'Daughter', 'Mother', 'Father', 'Boyfriend', 'Girlfriend', 'Aunt', 'Uncle',
              'Nephew', 'Niece', 'Grandmother', 'Grandfather', 'Grandson', 'Granddaughter', 'Stepson', 'Stepdaughter',
@@ -31,6 +32,7 @@ relations = {'Brother', 'Sister', 'Son', 'Daughter', 'Mother', 'Father', 'Boyfri
              'Husband', 'Wife', 'Ex-wife', 'Husband', 'Boyfriend', 'Girlfriend'}
 names = set(line.strip() for line in open('names.txt'))
 stopwords = stopwords.words('english')
+nltk.download('punkt')
 
 
 class Dataset:
