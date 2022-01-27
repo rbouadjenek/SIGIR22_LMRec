@@ -26,6 +26,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import nltk
 
+nltk.download('stopwords')
+
 relations = {'Brother', 'Sister', 'Son', 'Daughter', 'Mother', 'Father', 'Boyfriend', 'Girlfriend', 'Aunt', 'Uncle',
              'Nephew', 'Niece', 'Grandmother', 'Grandfather', 'Grandson', 'Granddaughter', 'Stepson', 'Stepdaughter',
              'Stepsister', 'Stepbrother', 'Brother', 'Father', 'Sister', 'Mother-in-law', 'Fiance', 'Fiancee',
