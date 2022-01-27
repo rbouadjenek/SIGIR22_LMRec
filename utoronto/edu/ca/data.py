@@ -30,6 +30,35 @@ relations = {'Brother', 'Sister', 'Son', 'Daughter', 'Mother', 'Father', 'Boyfri
              'Nephew', 'Niece', 'Grandmother', 'Grandfather', 'Grandson', 'Granddaughter', 'Stepson', 'Stepdaughter',
              'Stepsister', 'Stepbrother', 'Brother', 'Father', 'Sister', 'Mother-in-law', 'Fiance', 'Fiancee',
              'Husband', 'Wife', 'Ex-wife', 'Husband', 'Boyfriend', 'Girlfriend'}
+
+locations = {"Spring lake", "Saintjohns", "Riverside", "Mercy drive", "Allandale", "Charlestown", "Lake nona south",
+             "New malibu", "Oakdale", "Lake nona central", "Franklinto", "Lancaster park", "Barbershop", "York mills",
+             "Massachusetts ave", "Tri-south", "Mit", "Everett", "Rocky-fork blacklick accord", "Cambridge highland",
+             "West cambridge", "Annex", "School", "Mission hill", "Waterfront", "Southside", "City center", "Peabody",
+             "Police station", "Fort columbus airport", "Rosedale", "Montopolis", "Chelsea", "Saint johns",
+             "Old west austin", "City of orlando", "Kenton", "Sunderland", "Fenway-kenmore", "Dental office",
+             "Windsor road", "East boston", "Brewery", "Downtown", "Bridlemile", "Crestview", "Forest park",
+             "Strawberry hill", "Wellington-harrington", "Martin luther king-hwy 183", "Mid cambridge", "Airport",
+             "Supermarket", "Alameda", "Lawrence park north", "Oakville", "Far southwest", "Roosevelt park",
+             "Computer lab", "Morningside park", "Washington shores", "Longwood medical area", "North central",
+             "Homestead", "Harbor islands", "Fashion studio", "Area iv", "Cabbage town", "Highland", "Milo grogan",
+             "The north end", "Thorncliffee park", "The southwest", "Malibu groves", "West columbus interim",
+             "Parkrose", "Kleinburg", "Ross island", "Main square", "Memorial dr", "Pharmacy", "Dancing studio",
+             "Old town-chinatown", "Mattapan", "Parker lane", "Olentangy river road", "Central", "Lloyd",
+             "Upper arlington", "Agassiz-harvard", "Eastmoreland", "Office", "Cambridgeport", "Clinic", "Parma court",
+             "The west end", "Hyde park", "Georgian acres", "Aliston", "Forest hills", "East cambridge", "Markham",
+             "Construction site", "Fenway", "Yorkville", "Roxbury", "Farm", "Worthington", "Orwin manor", "Bridgeton",
+             "Southwest hills", "Carver shores", "University", "Sunnybrook", "Chemical lab", "Centralsqaure",
+             "Virginia-highland", "Signal hill", "North burnett", "North orange", "Far north", "Mall", "Clintonville",
+             "Old cambridge", "Dorchester", "East congress", "Law office", "Johnston terrace", "Institution",
+             "Rose isle", "Back bay", "Mill park", "Candler park", "Flemingdon park", "Black creek",
+             "Convenience store", "South eola", "Fresh pond pky", "Inman park", "The south end", "Gateway",
+             "Music studio", "South river city", "Crescent town", "Powellhurst", "Rowena gardens", "North cambridge",
+             "Beacon hill", "Lake nona", "Near southside", "Allston", "Johnson village", "Midtown", "Harrison west",
+             "Revere", "Oakridge", "Thorncliffe park", "Lynn", "East somerville", "Bexley", "Jamaica plain", "Zilker",
+             "Hillsdale", "The south side", "Jewelry store", "Ormewood park", "West roxbury", "Lake sunset",
+             "Scarborough city centre", "Buckhead", "Hospital", "Mlk", "Linnton", "South linden", "Barton hills",
+             "Bank", "Centennial", "Poncey highland", "Corktown", "The seaport district"}
 names = set(line.strip() for line in open('names.txt'))
 stopwords = stopwords.words('english')
 nltk.download('punkt')
@@ -214,7 +243,7 @@ class Dataset:
         token_txt = set([txt.capitalize() for txt in tokenized_text if txt.lower() not in stopwords
                          and txt.lower() not in exlusion_list])
 
-        token_txt = token_txt.intersection(names.union(relations))
+        token_txt = token_txt.intersection(names.union(relations, locations))
         for txt in token_txt:
             aText_string = re.compile(re.escape(txt), re.IGNORECASE).sub('[MASK]', aText_string)
         return aText_string
