@@ -25,7 +25,7 @@ def mean_reciprocal_rank(y_true, y_score):
     temp = np.argsort(-1 * y_score, axis=1)
     ranks = temp.argsort() + 1
     scores = 1/np.sum(one_hot*ranks, axis=1)
-    return np.mean(scores), (1.96 * np.std(scores)) / np.sqrt(len(scores))
+    return np.mean(scores), (1.645 * np.std(scores)) / np.sqrt(len(scores))
 
 def top_k_accuracy_score(y_true, y_score, k=2):
     """Top-k Accuracy classification score.
@@ -82,7 +82,7 @@ def top_k_accuracy_score(y_true, y_score, k=2):
     y_true_encoded = _encode(y_true, uniques=classes)
     sorted_pred = np.argsort(y_score, axis=1, kind="mergesort")[:, ::-1]
     hits = (y_true_encoded == sorted_pred[:, :k].T).any(axis=0)
-    return np.mean(hits), (1.96 * np.std(hits)) / np.sqrt(len(hits))
+    return np.mean(hits), (1.645 * np.std(hits)) / np.sqrt(len(hits))
 
 
 def get_performance(y_true: list, y_pred: list):
